@@ -11,7 +11,11 @@ import { useThemeMode, DarkThemeToggle, toggleSwitchTheme} from "flowbite-react"
 //show/hide
 import { Card } from "flowbite-react";
 
+//text input characters lenght
+import { TextInput } from "flowbite-react";
 
+//carousel
+import { Carousel } from "flowbite-react";
 
 
 
@@ -26,8 +30,29 @@ export default function Home() {
   const [showText, setShowText] = useState(false)
   const phrase = "lorem ipsum"
 
+  //characters count
+  const [character, setCharacter] = useState("you should type something...")
+  const [charCount, setCharCount] = useState(0)
+
+  function handleCharacter(typedValue) {
+
+    setCharacter(typedValue)
+    setCharCount(typedValue.length)
+    
+  }
+  
+  //carousel test
+  const images = [
+    "https://picsum.photos/id/1016/800/400",
+    "https://picsum.photos/id/1015/800/400",
+    "https://picsum.photos/id/1018/800/400",
+    "https://picsum.photos/id/1020/800/400",
+    "https://picsum.photos/id/1024/800/400" 
+  ];
+  
+
   return (
-    <main className="min-h-screen flex flex-col justify-center items-center gap-6 bg-white text-black dark:bg-gray-900 dark:text-white transition-colors duration-300">
+    <main className="min-h-screen flex flex-col justify-center items-center gap-6 bg-white text-black dark:bg-gray-900 dark:text-white transition-colors duration-300 py-20">
       { /* Counter */ }
       <section className="flex flex-col justify-center items-center gap-10 rounded-xl p-10 shadow-2xl bg-gray-100 text-black dark:bg-gray-800 dark:text-white transition-colors duration-300">
         <p className="text-5xl">counter: {count}</p>
@@ -73,6 +98,26 @@ export default function Home() {
 
         </section>
 
+        { /* Character Count */ }
+        <section className="flex flex-col justify-center items-center gap-2 rounded-xl px-10 py-5 shadow-2xl bg-gray-100 text-black dark:bg-gray-800 dark:text-white transition-colors duration-300">
+            <p>you typed {charCount} characters </p>
+            <p>{character}</p>
+            <TextInput placeholder="type something to count" 
+            onChange={(e) => handleCharacter(e.target.value)}
+            ></TextInput>
+
+        </section>
+
+        { /* Image Slider */ }
+
+<section>
+  <div className="h-56 sm:h-64 xl:h-80 2xl:h-96 w-[600px]">
+    <Carousel>
+      <img src="/loki.png" alt="foto" className="w-full h-full object-cover" />
+      <img src="/loki2.png" alt="foto2" className="w-full h-full object-cover" />
+    </Carousel>
+  </div>
+</section>
     </main>
   );
 }
