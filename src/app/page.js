@@ -117,7 +117,7 @@ export default function Home() {
       <img src="/loki2.png" alt="foto2" className="w-full h-full object-cover" />
     </Carousel>
   </div>
-</section>
+</section> 
     </main>
   );
 }
