@@ -14,8 +14,8 @@ import { Card } from "flowbite-react";
 //text input characters lenght
 import { TextInput } from "flowbite-react";
 
-//carousel
-import { Carousel } from "flowbite-react";
+//my own carousel
+import { Carousel } from "flowbite-react"; //not working
 
 
 
@@ -41,14 +41,23 @@ export default function Home() {
     
   }
   
-  //carousel test
-  const images = [
-    "https://picsum.photos/id/1016/800/400",
+  //my own carousel
+  const [index, setIndex] = useState(0)
+const images = [
+    "/ouroboros_800x400.png",
     "https://picsum.photos/id/1015/800/400",
     "https://picsum.photos/id/1018/800/400",
+    "https://picsum.photos/id/1019/800/400",
     "https://picsum.photos/id/1020/800/400",
-    "https://picsum.photos/id/1024/800/400" 
   ];
+
+  function next() {
+    setIndex( index === images.length - 1 ? 0 : index + 1 )
+  }
+  function prev() {
+    setIndex(index === 0 ? images.length - 1 : index - 1)
+  }
+
   
 
   return (
@@ -80,44 +89,71 @@ export default function Home() {
         <p>dark current mode: {mode}</p>
       </section>
 
-        { /* Show/Hide */ }
-        <section className="flex flex-col justify-center items-center gap-10 rounded-xl p-10 shadow-2xl bg-gray-100 text-black dark:bg-gray-800 dark:text-white transition-colors duration-300">
-          {showText && 
-          <Card href="#" className="max-w-sm">
-      <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-        Noteworthy technology acquisitions 2021
-      </h5>
-      <p className="font-normal text-gray-700 dark:text-gray-400">
-        Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.
-      </p>
-    </Card>}
+      { /* Show/Hide */ }
+      <section className="flex flex-col justify-center items-center gap-10 rounded-xl p-10 shadow-2xl bg-gray-100 text-black dark:bg-gray-800 dark:text-white transition-colors duration-300">
+        {showText && 
+        <Card href="#" className="max-w-sm">
+    <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+      Noteworthy technology acquisitions 2021
+    </h5>
+    <p className="font-normal text-gray-700 dark:text-gray-400">
+      Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.
+    </p>
+  </Card>}
 
-        <Button onClick={() => setShowText(!showText)}>
-            {showText ? "Hide Text" : "Show Text"}  
-        </Button>
+      <Button onClick={() => setShowText(!showText)}>
+          {showText ? "Hide Text" : "Show Text"}  
+      </Button>
 
-        </section>
+      </section>
 
-        { /* Character Count */ }
-        <section className="flex flex-col justify-center items-center gap-2 rounded-xl px-10 py-5 shadow-2xl bg-gray-100 text-black dark:bg-gray-800 dark:text-white transition-colors duration-300">
-            <p>you typed {charCount} characters </p>
-            <p>{character}</p>
-            <TextInput placeholder="type something to count" 
-            onChange={(e) => handleCharacter(e.target.value)}
-            ></TextInput>
+      { /* Character Count */ }
+      <section className="flex flex-col justify-center items-center gap-2 rounded-xl px-10 py-5 shadow-2xl bg-gray-100 text-black dark:bg-gray-800 dark:text-white transition-colors duration-300">
+          <p>you typed {charCount} characters </p>
+          <p>{character}</p>
+          <TextInput placeholder="type something to count" 
+          onChange={(e) => handleCharacter(e.target.value)}
+          ></TextInput>
 
-        </section>
+      </section>
 
-        { /* Image Slider */ }
+      { /* Image Slider */ }
+      <section className=" relative flex flex-col justify-center items-center gap-2 rounded-xl px-10 py-5 shadow-2xl bg-gray-100 text-black dark:bg-gray-800 dark:text-white transition-colors duration-300">
+          
+          <img src={images[index]} alt="images" />
+          
+          <div className="absolute bottom-36 left-1/2 z-30 flex -translate-x-1/2 gap-3">
+          {images.map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => setIndex(i)}
+              className={`h-3 w-3 rounded-full ${
+                index === i ? "bg-blue-600" : "bg-white/50"
+              }`}
+              aria-label={`Slide ${i + 1}`}
+            />
+          ))}
+        </div>
 
-<section>
-  <div className="h-56 sm:h-64 xl:h-80 2xl:h-96 w-[600px]">
-    <Carousel>
-      <img src="/loki.png" alt="foto" className="w-full h-full object-cover" />
-      <img src="/loki2.png" alt="foto2" className="w-full h-full object-cover" />
-    </Carousel>
-  </div>
-</section> 
+
+          <p> the core of image slider is just a <b> Ouroboros </b></p>
+          <p>index: {index}</p>
+          <div className="flex justify-center items-center gap-5">
+            <Button onClick={prev} >prev</Button>
+            <Button onClick={next} >next</Button>
+          </div>
+      </section>
+
+
+
+
+     {/*  <img src="/loki.png" alt="" /> */}
+
+
+
+
+
     </main>
   );
 }
