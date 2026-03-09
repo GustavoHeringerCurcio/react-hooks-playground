@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import SimpleNavBar from "@/app/components/simple-navbar"
 
 //counter imports
 import { Button } from "flowbite-react";
@@ -20,6 +21,8 @@ import { Carousel } from "flowbite-react"; //not working
 
 //Currency converter
 import { Label, Select } from "flowbite-react";
+
+
 
 
 
@@ -48,7 +51,7 @@ export default function Home() {
   //my own carousel
   const [index, setIndex] = useState(0)
 const images = [
-    "/ouroboros_800x400.png",
+    "https://picsum.photos/id/1016/800/400",
     "https://picsum.photos/id/1015/800/400",
     "https://picsum.photos/id/1018/800/400",
     "https://picsum.photos/id/1019/800/400",
@@ -79,7 +82,8 @@ const convertedAmount = amount === "" ? "" : ((amount * rates[fromCurrency]) / r
   return (
     <main className="min-h-screen flex flex-col justify-center items-center gap-6 bg-gray-100 text-black dark:bg-gray-900 dark:text-white transition-colors duration-300 py-5">
       
-      <Link className="text-blue-600 underline" href="/"> 🔷 Go Back.</Link>
+      <SimpleNavBar></SimpleNavBar>
+
       { /* Counter */ }
       <section className="flex flex-col justify-center items-center gap-10 rounded-xl p-10 shadow-2xl bg-white text-black dark:bg-gray-800 dark:text-white transition-colors duration-300">
         <p className="text-5xl">counter: {count}</p>
@@ -155,7 +159,7 @@ const convertedAmount = amount === "" ? "" : ((amount * rates[fromCurrency]) / r
         </div>
 
 
-          <p> the Carousel index is like an <b> Ouroboros </b></p>
+          <p> the Carousel index is like an  Ouroboros</p>
           <p>index: {index}</p>
           <div className="flex justify-center items-center gap-5">
             <Button onClick={prev} >prev</Button>

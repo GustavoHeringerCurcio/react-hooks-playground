@@ -2,12 +2,13 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import SimpleNavBar from "../components/simple-navbar";
 
 //counter imports
 import { Button } from "flowbite-react";
 
 
-export default function reacUseEffect() {
+export default function reactUseEffect() {
   
   const [count, setCount] = useState(0)
   const [count2, setCount2] = useState(0)
@@ -31,14 +32,25 @@ export default function reacUseEffect() {
     document.title = `you clicked ${click} times!`
     localStorage.setItem("ls_value", click)
   })  
-  
 
+  // Fetching API using useEffect.
+  const [resourceType, setResourceType] = useState("posts")
+  const [items, setItems] = useState([])
 
+  useEffect(() => {
+    fetch(`https://jsonplaceholder.typicode.com/${resourceType}`)
+      .then(response => response.json())
+      .then(json => {
+        setItems(json)
+        console.log(json)
+      })
+      
+  }, [resourceType])
 
 
   return (
     <main className="min-h-screen flex flex-col justify-center items-center gap-6 bg-gray-100 text-black dark:bg-gray-900 dark:text-white transition-colors duration-300 py-5">
-      <Link className="text-blue-600 underline" href="/"> 🔷 Go Back.</Link>
+      <SimpleNavBar></SimpleNavBar>
       <h1 className="text-xl">UseEffect practices</h1>
         <h2 className="text-xl">we have 3 mainly ways to use useeffect.</h2>
       <div className="flex flex-col justify-center items-center gap-2 text-blue-600">
@@ -104,9 +116,31 @@ export default function reacUseEffect() {
         <p>this value is saved using local.storage.setItem</p>
         
         <Button onClick={() => setClick(click + 1)}>Click Here!</Button>
+      </section>
 
 
+      <section className="flex flex-col justify-center items-center gap-5 rounded-xl p-10 shadow-2xl bg-white text-black dark:bg-gray-800 dark:text-white transition-colors duration-300">
+
+      <p>Fetching API using useEffect</p>
+      <div className="flex justify-center items-center gap-5">
+        <Button onClick={() => setResourceType("posts")}> Posts</Button>
+        <Button onClick={() => setResourceType("users")}> Users</Button>
+        <Button onClick={() => setResourceType("comments")}> Comments</Button>
+      </div>
+      
+      <div>
         
+        <h1 className="text-2xl">{resourceType}</h1>
+      {items.slice(0,3).map(item => (
+
+          <pre key={item.id} className=" text-xs whitespace-pre-wrap wrap-break-word max-w-md mt-5 border border-black p-2 bg-gray-700 text-white dark:text-blue-600 rounded-lg">
+            {JSON.stringify(item, null, 2)}
+          </pre>
+
+      )
+      )}
+      </div>
+
       </section>
 
     </main>

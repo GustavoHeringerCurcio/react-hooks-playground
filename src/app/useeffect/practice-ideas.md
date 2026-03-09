@@ -1,161 +1,263 @@
-# React `useEffect` Practice List
+# useEffect Practice Exercises
 
-Practice exercises to understand how `useEffect` works in real situations.
-
----
-three options to use useeffect.
-1. always that something renders, not recomended.
-2. use an empty array [] -> just render 1 time, on mount.
-3. [dependecies] always that the dependecies renders the effect is used.
-
-## 1. Console Logger
-
-Create a counter.
-
-Every time the counter changes, log a message in the console.
-
-Example:
-
-```
-Count changed: 3
-```
+These exercises are designed to help you practice **real-world `useEffect` patterns**.
+Try to **implement them yourself first** before looking up solutions.
 
 ---
 
-## 2. Update Document Title
+# 4. Window Resize Tracker
 
-Create a counter.
+## Goal
 
-Whenever the counter changes, update the browser tab title.
+Track the **window width and height** and update the UI whenever the browser window is resized.
 
-Example:
+## Concepts Practiced
+
+* `useEffect`
+* `addEventListener`
+* cleanup functions
+* React state updates
+
+## Steps
+
+1. Create a state to store the window size.
+
+```javascript
+const [size, setSize] = useState({
+  width: window.innerWidth,
+  height: window.innerHeight
+});
+```
+
+2. Create a function that updates the state using:
 
 ```
-You clicked 5 times
+window.innerWidth
+window.innerHeight
+```
+
+3. Inside `useEffect`:
+
+* add a `"resize"` event listener
+* call your update function when the event happens
+
+4. Cleanup the event listener when the component unmounts.
+
+Example lifecycle concept:
+
+```
+Component mounts → addEventListener
+Component unmounts → removeEventListener
+```
+
+## Example UI
+
+```
+Window Width: 1280
+Window Height: 720
+```
+
+## Bonus Challenge
+
+Show a message depending on screen size:
+
+```
+Mobile Screen
+Tablet Screen
+Desktop Screen
 ```
 
 ---
 
-## 3. Run Effect Only Once
+# 5. Timer Counter
 
-Run an effect only when the component loads.
+## Goal
 
-Example:
+Create a counter that **increments automatically every second**.
+
+## Concepts Practiced
+
+* `setInterval`
+* `useEffect`
+* cleanup with `clearInterval`
+
+## Steps
+
+1. Create a state:
+
+```javascript
+const [seconds, setSeconds] = useState(0);
+```
+
+2. Inside `useEffect`:
+
+* start an interval
+* increment the counter every **1000 milliseconds**
+
+3. Cleanup the interval when the component unmounts.
+
+```javascript
+clearInterval(intervalId);
+```
+
+## Example UI
 
 ```
-Page loaded
+Timer: 0 seconds
+Timer: 1 seconds
+Timer: 2 seconds
+Timer: 3 seconds
 ```
 
-Hint:
-Use an empty dependency array.
+## Bonus Challenges
+
+Add buttons:
+
+```
+Start
+Pause
+Reset
+```
+
+Extra challenge: create a **countdown timer**.
 
 ---
 
-## 4. Window Resize Tracker
+# 9. Online / Offline Status
 
-Display the current window width.
+## Goal
 
-Update the value whenever the user resizes the browser.
+Detect whether the user **has internet connection**.
 
-Example:
+## Concepts Practiced
 
-```
-Width: 1280px
-```
+* browser events
+* `navigator.onLine`
+* multiple event listeners
+* cleanup functions
 
----
-
-## 5. Timer Counter
-
-Create a counter that increases automatically every second.
-
-Example:
+## Events to Use
 
 ```
-Seconds: 0
-Seconds: 1
-Seconds: 2
+online
+offline
 ```
 
-Hint:
-Use `setInterval`.
+## Steps
 
----
+1. Create a state:
 
-## 6. Fetch Users From API
-
-Fetch users from this API when the component loads:
-
-```
-https://jsonplaceholder.typicode.com/users
+```javascript
+const [isOnline, setIsOnline] = useState(navigator.onLine);
 ```
 
-Display the user names in a list.
+2. Inside `useEffect`, add event listeners:
 
----
-
-## 7. Search With API
-
-Create an input field.
-
-Whenever the search value changes, fetch data from an API.
-
-Example UI:
-
-```
-Search: John
+```javascript
+window.addEventListener("online", handleOnline);
+window.addEventListener("offline", handleOffline);
 ```
 
-The request should run every time the search changes.
+3. Update the state when each event occurs.
 
----
+4. Cleanup both listeners.
 
-## 8. Dark Mode Persistence
-
-Create a dark mode toggle.
-
-Save the user's preference in `localStorage`.
-
-When the page refreshes, the theme should stay the same.
-
----
-
-## 9. Online / Offline Status
-
-Detect if the user is online or offline.
-
-Display:
+## Example UI
 
 ```
-You are online
+🟢 You are online
 ```
 
 or
 
 ```
-You are offline
+🔴 You are offline
+```
+
+## Bonus Challenge
+
+Show a temporary banner when the connection changes:
+
+```
+Connection lost
+Connection restored
 ```
 
 ---
 
-## 10. Auto Save Input
+# 10. Auto Save Input
 
-Create a textarea.
+## Goal
 
-Whenever the user types, automatically save the content in `localStorage`.
+Automatically save user input to **localStorage** while the user types.
 
-After refreshing the page, the text should still be there.
+## Concepts Practiced
+
+* controlled inputs
+* `useEffect` dependencies
+* localStorage persistence
+
+## Steps
+
+1. Create a state:
+
+```javascript
+const [text, setText] = useState("");
+```
+
+2. Create an input field:
+
+```jsx
+<input
+  value={text}
+  onChange={(e) => setText(e.target.value)}
+/>
+```
+
+3. Inside `useEffect`, save the text whenever it changes:
+
+```javascript
+localStorage.setItem("draft", text);
+```
+
+4. When the component loads, retrieve the saved value:
+
+```javascript
+localStorage.getItem("draft");
+```
+
+## Example UI
+
+```
+Write something...
+
+(saved automatically)
+```
+
+## Bonus Challenges
+
+Show a save indicator:
+
+```
+Saving...
+Saved ✔
+```
+
+Advanced improvement:
+
+Add **debouncing** so it saves only **after the user stops typing for 1 second**.
 
 ---
 
-## Bonus Exercise
+# Summary
 
-Random Image Gallery.
+These exercises cover the **most common real-world patterns of `useEffect`**.
 
-Fetch images from:
+| Pattern        | Example        |
+| -------------- | -------------- |
+| Side Effects   | localStorage   |
+| Timers         | setInterval    |
+| Browser Events | online/offline |
+| Subscriptions  | window resize  |
 
-```
-https://picsum.photos/v2/list
-```
-
-Display the images in a grid.
+If you master these patterns, you will understand **most practical uses of `useEffect` in React applications**.
