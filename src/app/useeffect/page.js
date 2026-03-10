@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
 import SimpleNavBar from "../components/simple-navbar";
 
 //counter imports
@@ -47,9 +46,64 @@ export default function reactUseEffect() {
       
   }, [resourceType])
 
+  const [windowSize, setWindowSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight    
+  })
+
+  function handleResize() {
+    setWindowSize({
+      width: window.innerWidth,
+      height: window.innerHeight
+    })
+  }
+
+  useEffect(() => {
+
+    //"When this event happens, run this function."
+    //                       (event, function)
+    //examples: resize, scroll, click, keydown
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize)
+    }
+
+  },[])
+
+  const device = windowSize.width > 768 ? "Desktop" : "Mobile"
+
+  //online and offline
+
+  const [isOnline, setIsOnline] = useState(navigator.onLine)
+
+  function handleOnline() {
+    setIsOnline(true)
+  }
+  
+  function handleOffline() {
+    setIsOnline(false)
+  }
+
+  useEffect(() => {
+    window.addEventListener("online", handleOnline)
+    window.addEventListener("offline", handleOffline)
+
+    return () => {
+      window.removeEventListener("online", handleOnline)
+      window.removeEventListener("offline", handleOffline)
+    }
+  },[])
+
+  const displayOnline = isOnline ? "🟢 You are online" : "🔴 You are offline"
+
+
+  
+
 
   return (
     <main className="min-h-screen flex flex-col justify-center items-center gap-6 bg-gray-100 text-black dark:bg-gray-900 dark:text-white transition-colors duration-300 py-5">
+      { /* Header */ }
       <SimpleNavBar></SimpleNavBar>
       <h1 className="text-xl">UseEffect practices</h1>
         <h2 className="text-xl">we have 3 mainly ways to use useeffect.</h2>
@@ -118,7 +172,7 @@ export default function reactUseEffect() {
         <Button onClick={() => setClick(click + 1)}>Click Here!</Button>
       </section>
 
-
+      { /* FetchAPI */ }
       <section className="flex flex-col justify-center items-center gap-5 rounded-xl p-10 shadow-2xl bg-white text-black dark:bg-gray-800 dark:text-white transition-colors duration-300">
 
       <p>Fetching API using useEffect</p>
@@ -140,8 +194,35 @@ export default function reactUseEffect() {
       )
       )}
       </div>
+      </section>
+
+      { /* Window Resize Tracker  + Online and Offline*/ }
+      <section className="flex flex-col justify-center items-center gap-5 rounded-xl p-10 shadow-2xl bg-white text-black dark:bg-gray-800 dark:text-white transition-colors duration-300">
+
+      <h2>Window Resize Tracker</h2>
+      
+      <p>The user device: {device}</p>
+      <p>Width: {windowSize.width}</p>
+      <p>height: {windowSize.height}</p>
+
+      <Button onClick={() => handleResize()}>click here</Button>
 
       </section>
+
+      { /*Online and Offline*/ }
+      <section className="flex flex-col justify-center items-center gap-5 rounded-xl p-10 shadow-2xl bg-white text-black dark:bg-gray-800 dark:text-white transition-colors duration-300">
+
+      <h1>use effect checking if you are online or offline</h1>
+      <p>{displayOnline}</p>
+
+      </section>
+
+      <section className="flex flex-col justify-center items-center gap-5 rounded-xl p-10 shadow-2xl bg-white text-black dark:bg-gray-800 dark:text-white transition-colors duration-300">
+
+        
+      </section>
+
+
 
     </main>
   );
